@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Expediente · El mismo idioma — SuperLeads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3ECDD;
+  --paper-deep:#EADFC5;
+  --paper-card:#FBF7EE;
+  --line:#D8C9A6;
+  --line-soft:#E4D8BA;
+  --ink:#241C15;
+  --ink-dim:#6B5D46;
+  --ink-faint:#9C8E71;
+  --navy:#0C2350;
+  --navy-soft:#33456F;
+  --stamp-green:#2B6B4C;
+  --stamp-red:#8C3A28;
+  --wa-out:#DCEFE1;
+  --wa-in:#FFFFFF;
+  --highlight:rgba(244,196,84,.45);
+  --metal:#9AA3AE;
+  --r:14px;
+  --r-lg:22px;
+  --font-display:'Fraunces', serif;
+  --font-body:'Karla', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+}
+body{
+  margin:0; font-family:var(--font-body); color:var(--ink); background:var(--paper);
+  -webkit-font-smoothing:antialiased; line-height:1.65;
+  background-image:
+    radial-gradient(rgba(36,28,21,.035) 1px, transparent 1px);
+  background-size:3px 3px;
+}
+::selection{background:var(--highlight); color:var(--ink);}
+h1,h2,h3{font-family:var(--font-display); color:var(--ink); margin:0;}
+p{margin:0 0 16px;}
+a{color:var(--navy-soft);}
+button{font-family:var(--font-body); cursor:pointer;}
+
+/* ============ RAIL ============ */
+.rail{
+  position:fixed; top:0; left:0; height:100vh; width:84px; z-index:80;
+  display:flex; flex-direction:column; align-items:center; padding:22px 0;
+  gap:6px; background:transparent;
+}
+.rail-line{position:absolute; left:41px; top:70px; bottom:70px; width:1px; background:var(--line); pointer-events:none;}
+.rail-tab{
+  position:relative; z-index:2; width:56px; height:44px; border-radius:0 12px 12px 0;
+  background:var(--paper-deep); border:1px solid var(--line); border-left:none;
+  display:flex; align-items:center; justify-content:center; margin-left:-14px;
+  font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--ink-faint);
+  cursor:pointer; transition:.2s; text-decoration:none; padding:0; appearance:none;
+}
+.rail-tab:hover{color:var(--ink); background:#F1E6C8;}
+.rail-tab.active{background:var(--navy); color:#F3ECDD; border-color:var(--navy); width:64px;}
+.rail-caption{position:fixed; left:96px; top:0; z-index:79; font-family:var(--font-mono); font-size:10.5px;
+  color:var(--ink-dim); letter-spacing:.04em; opacity:0; transition:opacity .2s; pointer-events:none;
+  background:var(--paper-card); border:1px solid var(--line); padding:6px 10px; border-radius:8px; max-width:180px;}
+
+.mobile-bar{display:none; position:fixed; top:0; left:0; right:0; z-index:90; background:var(--navy); color:#F3ECDD;
+  padding:12px 18px; align-items:center; justify-content:space-between; font-family:var(--font-mono); font-size:12px;}
+.mobile-bar .dot-row{display:flex; gap:5px;}
+.mobile-bar .dot{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.28); border:none; padding:0; appearance:none; cursor:pointer;}
+.mobile-bar .dot.active{background:#7DE29B;}
+
+/* ============ LAYOUT ============ */
+main{margin-left:84px;}
+.cover{padding:120px 0 80px; max-width:700px; margin:0 auto; padding-left:28px; padding-right:28px;}
+.folio{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-dim);
+  display:flex; align-items:center; gap:10px; margin-bottom:26px;}
+.folio::before{content:""; width:26px; height:1px; background:var(--ink-faint);}
+.cover h1{font-size:clamp(32px,5vw,50px); font-weight:600; line-height:1.08; letter-spacing:-.01em; margin-bottom:22px;}
+.cover h1 em{font-style:italic; color:var(--navy);}
+.cover .dek{font-size:18px; color:var(--ink-dim); max-width:540px; line-height:1.6;}
+.receipt{
+  margin-top:38px; background:var(--paper-card); border:1px solid var(--line); border-radius:var(--r);
+  padding:18px 22px; display:flex; flex-wrap:wrap; gap:22px; font-family:var(--font-mono); font-size:13px;
+  box-shadow:0 10px 26px rgba(36,28,21,.06);
+}
+.receipt .stat{display:flex; flex-direction:column; gap:2px;}
+.receipt .stat b{font-size:20px; color:var(--navy);}
+.receipt .stat span{color:var(--ink-dim); font-size:11px; text-transform:uppercase; letter-spacing:.05em;}
+.receipt-note{font-family:var(--font-body); font-size:13.5px; color:var(--ink-dim); margin-top:12px; font-style:italic;}
+
+section.chapter{padding:64px 0 10px; max-width:700px; margin:0 auto; padding-left:28px; padding-right:28px; position:relative;}
+.chapter-head{margin-bottom:26px;}
+.chapter-eyebrow{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--stamp-red);
+  display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+.chapter-eyebrow .no{font-weight:700;}
+.chapter-head h2{font-size:clamp(24px,3.4vw,32px); font-weight:600; line-height:1.2; margin-bottom:6px;}
+.chapter-head .sub{font-size:15.5px; color:var(--ink-dim); font-style:italic; max-width:520px;}
+
+.torn{height:26px; margin:8px 0 0; position:relative; max-width:700px; margin-left:auto; margin-right:auto;}
+.torn svg{width:100%; height:100%; display:block;}
+
+p.lead{font-size:17px;}
+p.narr{font-size:16px; color:var(--ink);}
+.term{color:var(--navy); font-weight:700; border-bottom:2px solid var(--highlight);}
+
+/* ============ INDEX CARD ============ */
+.index-card{
+  background:var(--paper-card); border:1px dashed var(--ink-faint); border-radius:10px;
+  padding:16px 18px 14px; margin:20px 0; position:relative; font-size:13.5px;
+}
+.index-card::before{
+  content:""; position:absolute; top:-9px; left:22px; width:26px; height:14px; border-radius:3px;
+  background:var(--metal); opacity:.55; transform:rotate(-8deg);
+}
+.index-card h4{font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--ink-dim); margin:0 0 8px; font-weight:600;}
+.index-card .big{font-family:var(--font-mono); font-size:26px; font-weight:700; color:var(--navy); line-height:1;}
+.index-card .row{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--line-soft); font-size:13.5px;}
+.index-card .row:last-child{border-bottom:none;}
+.index-card .row b{color:var(--ink);}
+
+/* ============ STAMP ============ */
+.stamp{
+  display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-weight:700; font-size:13px;
+  text-transform:uppercase; letter-spacing:.08em; border:2.5px solid; border-radius:8px; padding:6px 14px;
+  transform:rotate(-3deg); margin:4px 6px 4px 0;
+}
+.stamp.g{color:var(--stamp-green); border-color:var(--stamp-green);}
+.stamp.r{color:var(--stamp-red); border-color:var(--stamp-red);}
+.stamp.n{color:var(--navy); border-color:var(--navy);}
+
+/* ============ CONTACT CONTRAST (cap 1) ============ */
+.contrast{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:22px 0;}
+@media (max-width:600px){.contrast{grid-template-columns:1fr;}}
+.msgcard{background:var(--paper-card); border:1px solid var(--line); border-radius:var(--r); padding:16px 18px;}
+.msgcard .who{font-family:var(--font-mono); font-size:11px; text-transform:uppercase; color:var(--ink-dim); margin-bottom:8px; letter-spacing:.04em;}
+.msgcard .txt{font-size:14.5px; color:var(--ink); font-style:italic; margin-bottom:10px;}
+.msgcard .tag{display:inline-block; font-family:var(--font-mono); font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px;}
+.msgcard.yes{border-color:#B9D4C4;}
+.msgcard.yes .tag{background:#E3F2E9; color:var(--stamp-green);}
+.msgcard.no .tag{background:#F3E4DE; color:var(--stamp-red);}
+
+/* ============ FUENTE FLOW (cap 2) ============ */
+.flow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:18px 0;}
+.flow .f{background:var(--navy); color:#F3ECDD; font-family:var(--font-mono); font-size:12.5px; font-weight:600;
+  padding:8px 14px; border-radius:999px;}
+.flow .arr{color:var(--ink-faint);}
+.mix-bar{display:flex; height:34px; border-radius:8px; overflow:hidden; margin:16px 0 8px; border:1px solid var(--line);}
+.mix-bar span{display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:11.5px; font-weight:700; color:#fff;}
+.mix-legend{display:flex; gap:16px; flex-wrap:wrap; font-size:12.5px; color:var(--ink-dim); font-family:var(--font-mono);}
+.mix-legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; vertical-align:middle;}
+
+/* ============ TIMELINE (cap 3) ============ */
+.ciclos{display:flex; gap:12px; margin:22px 0; flex-wrap:wrap;}
+.ciclo{flex:1; min-width:160px; border:1px solid var(--line); border-radius:var(--r); padding:16px; background:var(--paper-card);}
+.ciclo.actual{border-color:var(--navy); box-shadow:0 0 0 1px var(--navy) inset;}
+.ciclo .lbl{font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-dim); margin-bottom:6px;}
+.ciclo .val{font-size:22px; font-weight:700; color:var(--navy); font-family:var(--font-display);}
+.ciclo .d{font-size:12.5px; color:var(--ink-dim); margin-top:4px;}
+
+/* ============ PHONE ============ */
+.phone-wrap{display:flex; justify-content:center; margin:32px 0 20px;}
+.phone{
+  width:300px; max-width:88vw; background:#EFEAE2; border-radius:32px; border:8px solid var(--navy);
+  box-shadow:0 20px 44px rgba(12,35,80,.28); overflow:hidden; position:relative;
+}
+.phone-head{background:var(--navy); color:#fff; padding:14px 16px 10px; }
+.phone-head .name{font-weight:700; font-size:14px;}
+.phone-head .stage-pill{
+  display:inline-block; margin-top:6px; background:#7DE29B; color:#0C2350; font-family:var(--font-mono);
+  font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:999px; letter-spacing:.03em;
+}
+.phone-body{padding:16px 12px 18px; min-height:120px; display:flex; flex-direction:column; gap:10px;}
+.bubble{max-width:80%; padding:9px 12px; border-radius:14px; font-size:13px; line-height:1.4;
+  opacity:0; transform:translateY(10px); transition:opacity .5s ease, transform .5s ease; position:relative;}
+.bubble.visible{opacity:1; transform:none;}
+.bubble.in{align-self:flex-start; background:var(--wa-in); border-bottom-left-radius:4px; box-shadow:0 1px 2px rgba(0,0,0,.08);}
+.bubble.out{align-self:flex-end; background:var(--wa-out); border-bottom-right-radius:4px; box-shadow:0 1px 2px rgba(0,0,0,.08);}
+.bubble .meta{display:block; font-family:var(--font-mono); font-size:9.5px; color:var(--ink-faint); margin-top:4px; text-align:right;}
+.bubble .flag{
+  position:absolute; top:-11px; left:6px; background:var(--stamp-red); color:#fff; font-family:var(--font-mono);
+  font-size:9.5px; font-weight:700; padding:2px 8px; border-radius:999px; white-space:nowrap;
+}
+.bubble.out .flag{left:auto; right:6px; background:var(--stamp-green);}
+.phone-note{max-width:88vw; width:300px; margin:0 auto; text-align:center; font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); margin-top:8px;}
+
+/* exhibit bubble (cap 5) */
+.exhibits{display:flex; gap:18px; flex-wrap:wrap; margin:22px 0;}
+.exhibit{flex:1; min-width:220px; background:var(--paper-card); border:1px solid var(--line); border-radius:var(--r); padding:16px; position:relative;}
+.exhibit::before{content:""; position:absolute; top:-8px; right:18px; width:24px; height:13px; background:var(--metal); opacity:.5; border-radius:2px; transform:rotate(6deg);}
+.exhibit .bub{background:var(--wa-in); border-radius:12px; border-bottom-left-radius:4px; padding:9px 12px; font-size:13px; box-shadow:0 1px 2px rgba(0,0,0,.08); margin-bottom:10px;}
+.exhibit .note{font-family:var(--font-mono); font-size:11.5px; color:var(--stamp-red); font-weight:700;}
+.exhibit .note2{font-size:13px; color:var(--ink-dim); margin-top:4px;}
+
+/* qualification table */
+.qtable{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;}
+.qtable th{text-align:left; background:var(--paper-deep); color:var(--ink-dim); font-family:var(--font-mono); font-size:10.5px;
+  text-transform:uppercase; letter-spacing:.05em; padding:8px 10px;}
+.qtable td{padding:8px 10px; border-bottom:1px solid var(--line-soft);}
+.qtable td b{color:var(--navy);}
+
+/* roles (cap 7) */
+.roles{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:22px 0;}
+@media (max-width:600px){.roles{grid-template-columns:1fr;}}
+.role{background:var(--paper-card); border:1px solid var(--line); border-radius:var(--r-lg); padding:20px;}
+.role h4{font-family:var(--font-display); font-size:18px; margin-bottom:6px;}
+.role p{font-size:13.5px; color:var(--ink-dim); margin-bottom:0;}
+.role.you{border-color:var(--navy);}
+.role .badge{display:inline-block; font-family:var(--font-mono); font-size:10.5px; font-weight:700; color:var(--navy);
+  background:#E3EBFB; padding:2px 9px; border-radius:999px; margin-bottom:10px;}
+
+/* razones pills */
+.pillrow{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0;}
+.pillrow span{background:var(--paper-deep); border:1px solid var(--line); color:var(--ink); font-size:12.5px;
+  padding:5px 12px; border-radius:999px; font-family:var(--font-mono);}
+
+/* checklist closer */
+.checklist{display:flex; flex-direction:column; gap:10px; margin:22px 0;}
+.check{display:flex; align-items:center; gap:12px; font-size:14.5px;}
+.check .c{width:22px; height:22px; border-radius:50%; background:var(--stamp-green); color:#fff; display:flex;
+  align-items:center; justify-content:center; font-size:12px; flex-shrink:0;}
+
+/* ============ REPASO ============ */
+.recap-btn{
+  display:inline-flex; align-items:center; gap:8px; margin-top:22px; background:var(--paper-card);
+  border:1.5px dashed var(--ink-faint); color:var(--navy); font-family:var(--font-mono); font-weight:600;
+  font-size:12.5px; padding:9px 16px; border-radius:999px; transition:.18s;
+}
+.recap-btn:hover{background:var(--paper-deep); border-color:var(--navy);}
+.recap-overlay{
+  display:none; position:fixed; inset:0; background:rgba(36,28,21,.5); z-index:200;
+  align-items:center; justify-content:center; padding:24px;
+}
+.recap-overlay.open{display:flex;}
+.recap-card{
+  background:var(--paper-card); border:1px solid var(--line); border-radius:var(--r-lg); max-width:440px; width:100%;
+  padding:26px 28px 22px; position:relative; box-shadow:0 26px 60px rgba(36,28,21,.35); transform:rotate(-0.6deg);
+  max-height:82vh; overflow:auto;
+}
+.recap-card::before{
+  content:""; position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(-3deg); width:30px; height:15px;
+  background:var(--metal); opacity:.55; border-radius:3px;
+}
+.recap-close{
+  position:absolute; top:14px; right:16px; background:none; border:none; font-size:20px; color:var(--ink-dim);
+  line-height:1; padding:4px; border-radius:6px;
+}
+.recap-close:hover{color:var(--ink); background:var(--paper-deep);}
+.recap-eyebrow{font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--stamp-red); margin-bottom:6px;}
+.recap-card h3{font-size:20px; margin-bottom:14px; padding-right:20px;}
+.recap-card ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
+.recap-card li{font-size:14px; line-height:1.5; padding-left:20px; position:relative;}
+.recap-card li::before{content:"·"; position:absolute; left:2px; top:-2px; color:var(--navy); font-size:22px; font-weight:700;}
+.recap-card li b{color:var(--navy);}
+
+footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1px solid var(--line);
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font-family:var(--font-mono); font-size:12px; color:var(--ink-dim);}
+
+@media (max-width:900px){
+  .rail{display:none;}
+  .rail-caption{display:none;}
+  main{margin-left:0;}
+  .mobile-bar{display:flex;}
+  body{padding-top:48px;}
+  .cover{padding-top:64px;}
+}
+</style>
+</head>
+<body>
+
+<div class="mobile-bar">
+  <span>EXPEDIENTE · SUPERLEADS</span>
+  <div class="dot-row" id="mobileDots"></div>
+</div>
+
+<nav class="rail" id="rail">
+  <div class="rail-line"></div>
+</nav>
+<div class="rail-caption" id="railCaption"></div>
+
+<main>
+<header class="cover" id="cap-0">
+  <div class="folio">Expediente de trabajo · Little Kids / Colegio Iberoamericano</div>
+  <h1>El mismo idioma,<br><em>antes de tu cuenta.</em></h1>
+  <p class="dek">Pronto vamos a abrir tu cuenta de SuperLeads y te vamos a enseñar dónde vive cada cosa. Para que esa sesión no se sienta como otro choro técnico, primero sigamos a una familia — parecida a cientos de las tuyas — desde el primer mensaje hasta el día que inscribe. Cada palabra nueva aparece exactamente en el momento en que la necesitas, no antes.</p>
+  <div class="receipt">
+    <div class="stat"><b>449</b><span>Formularios recibidos</span></div>
+    <div class="stat"><b>116</b><span>Visitas al colegio</span></div>
+    <div class="stat"><b>60</b><span>Inscritos este ciclo</span></div>
+    <div class="stat"><b>65</b><span>Meta próximo ciclo</span></div>
+  </div>
+  <p class="receipt-note">Así se ve tu embudo real hoy. Al final de este expediente, vas a saber nombrar cada parte — y muy pronto las vas a ver adentro de tu cuenta.</p>
+</header>
+
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ============ CAP 1 ============ -->
+<section class="chapter" id="cap-1" data-title="Quién toca la puerta">
+  <div class="chapter-head">
+    <div class="chapter-eyebrow"><span class="no">01</span> · Tipo de contacto</div>
+    <h2>¿Quién toca la puerta?</h2>
+    <p class="sub">El mismo martes, a Miss Gladys le llegan dos mensajes casi al mismo tiempo.</p>
+  </div>
+  <p class="lead narr">No los dos cuentan igual. Y esa diferencia — que parece obvia cuando la ves escrita — es la primera pregunta que tu sistema tiene que resolver antes de hacer cualquier otra cosa.</p>
+
+  <div class="contrast">
+    <div class="msgcard yes">
+      <div class="who">WhatsApp recepción · 4:12 pm</div>
+      <div class="txt">"Hola buenas tardes, vi su anuncio de Facebook, ¿tienen lugar en Kinder 2 para el próximo ciclo?"</div>
+      <span class="tag">Prospecto</span>
+    </div>
+    <div class="msgcard no">
+      <div class="who">WhatsApp recepción · 4:15 pm</div>
+      <div class="txt">"Oye Miss, ¿ya llegaron los uniformes talla 8 de mi hijo? Es de 3° de primaria."</div>
+      <span class="tag">Alumno activo</span>
+    </div>
+  </div>
+
+  <p class="narr">Aquí está la primera pieza de vocabulario: <b>todo contacto tiene un <span class="term">Tipo</span></b> — obligatorio, sin excepción. Hay seis: <i>Prospecto, Alumno activo, Alumno graduado, Alumno retirado, Empleo (candidato), Proveedor.</i> Solo uno de esos seis se puede convertir en oportunidad de venta: <b>Prospecto</b> — como la señora del primer mensaje. Los otros cinco te van a seguir escribiendo — y está bien contestarles — pero nunca deberían aparecer contando para tu meta de 65.</p>
+  <p class="narr">Así que la primera regla, antes de cualquier embudo, es: <span class="term">solo el Prospecto entra al proceso comercial.</span> Todo lo demás es servicio a alguien que ya es parte de tu comunidad.</p>
+  <button class="recap-btn" data-recap="cap-1">🔁 Repaso rápido</button>
+</section>
+
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ============ CAP 2 ============ -->
+<section class="chapter" id="cap-2" data-title="De dónde vinieron">
+  <div class="chapter-head">
+    <div class="chapter-eyebrow"><span class="no">02</span> · Fuente → Canal → Campaña</div>
+    <h2>¿De dónde vino la señora Duarte?</h2>
+    <p class="sub">Antes de que existiera ese mensaje, algo pasó.</p>
+  </div>
+  <p class="lead narr">Tal vez vio un anuncio en Facebook mientras hacía scroll en la noche. Tal vez una amiga del grupo de mamás se lo recomendó. Tal vez pasó por tu stand en la Expo Escuela en enero. Ese "algo que pasó antes del chat" es lo que el sistema llama <span class="term">Fuente</span> — y se registra en tres niveles, no uno solo:</p>
+
+  <div class="flow">
+    <span class="f">Fuente</span><span class="arr">→</span>
+    <span class="f">Canal</span><span class="arr">→</span>
+    <span class="f">Campaña</span>
+  </div>
+  <p class="narr" style="font-size:14.5px; color:var(--ink-dim);">Ejemplo real de la señora Duarte: Fuente = <b>Ferias/eventos</b> → Canal = <b>Expo Escuela</b> → Campaña = <b>Stand enero 2027</b>. Si solo guardaras "vino de la expo", perderías la mitad de la historia.</p>
+
+  <p class="narr">Esto no es curiosidad — es dinero. Así es como vas a repartir los <b>529 formularios</b> que necesitas para llegar a tu meta de 65:</p>
+
+  <div class="mix-bar">
+    <span style="width:60%; background:#0C2350;">60% Expo Escuela</span>
+    <span style="width:30%; background:#2B6B4C;">30% Meta</span>
+    <span style="width:10%; background:#8C3A28;">10% Referidos</span>
+  </div>
+  <div class="mix-legend">
+    <span><i style="background:#0C2350"></i>317 formularios</span>
+    <span><i style="background:#2B6B4C"></i>159 formularios</span>
+    <span><i style="background:#8C3A28"></i>53 formularios</span>
+  </div>
+
+  <p class="narr">Por eso el sistema exige que <span class="term">todo prospecto traiga fuente, sí o sí</span>. Sin ese dato, nunca vas a saber si te conviene invertir más en el evento de enero o subirle a la pauta de Meta — vas a estar adivinando con la misma incertidumbre de siempre.</p>
+  <button class="recap-btn" data-recap="cap-2">🔁 Repaso rápido</button>
+</section>
+
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ============ CAP 3 ============ -->
+<section class="chapter" id="cap-3" data-title="Un mismo hilo, tres tiempos">
+  <div class="chapter-head">
+    <div class="chapter-eyebrow"><span class="no">03</span> · Lead = Oportunidad · Ciclos</div>
+    <h2>Un mismo hilo, tres tiempos</h2>
+    <p class="sub">En el instante en que la señora Duarte presiona enviar, se vuelve algo específico.</p>
+  </div>
+  <p class="lead narr">Se vuelve un <span class="term">Lead</span>. Y aquí hay algo que vale la pena que se quede contigo: <b>Lead y Oportunidad son la misma cosa.</b> No hay un Lead por un lado y una Oportunidad por otro — es un solo objeto que se va moviendo por el embudo. Le decimos Lead cuando entra, y Oportunidad cuando hablamos del proceso completo. Es el mismo expediente.</p>
+
+  <p class="narr">Ahora, algo que nos pasó a nosotros en las últimas juntas — y te lo digo directo porque te va a ahorrar confusión: un mismo número, el 60, sirvió a veces para contar lo que ya inscribiste, y otras veces casi se mezcló con la meta de 65 que todavía no pasa. Eso genera fantasmas de datos — números que se sienten reales pero que en realidad son dos cosas distintas habladas con la misma palabra.</p>
+
+  <p class="narr">Por eso tu cuenta va a vivir en <span class="term">tres ciclos</span> que nunca se mezclan:</p>
+
+  <div class="ciclos">
+    <div class="ciclo">
+      <div class="lbl">Pasado</div>
+      <div class="val">2024–25</div>
+      <div class="d">Ya cerrado. Ahí queda el historial.</div>
+    </div>
+    <div class="ciclo actual">
+      <div class="lbl">Actual</div>
+      <div class="val">60</div>
+      <div class="d">Lo que de verdad ya inscribiste este ciclo.</div>
+    </div>
+    <div class="ciclo">
+      <div class="lbl">Próximo</div>
+      <div class="val">65</div>
+      <div class="d">La meta que todavía estamos por lograr.</div>
+    </div>
+  </div>
+
+  <p class="narr">Cuando cierre el ciclo actual, se archiva tal como quedó — con sus 60 reales, sin tocar — y el "próximo" se convierte en el nuevo "actual". Así, en un año, vas a poder ver tus tres últimos ciclos uno al lado del otro sin dudar cuál es cuál.</p>
+  <button class="recap-btn" data-recap="cap-3">🔁 Repaso rápido</button>
+</section>
+
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ============ CAP 4 ============ -->
+<section class="chapter" id="cap-4" data-title="El camino">
+  <div class="chapter-head">
+    <div class="chapter-eyebrow"><span class="no">04</span> · Etapas del embudo</div>
+    <h2>El camino que recorre</h2>
+    <p class="sub">Miss Gladys contesta. Esto es lo que pasa en su teléfono, en orden.</p>
+  </div>
+  <p class="narr">Cada mensaje mueve a la señora Duarte una casilla más en el mismo camino: <b>Lead → Contactado → Calificado → Cita agendada → Asistencia → Zona de Selección → Inscrito.</b> Es el mismo camino que tú ya llenaste con tus propios números (449 → 116 → 60) — solo que ahora cada paso tiene nombre.</p>
+
+  <div class="phone-wrap">
+    <div class="phone" data-phone="1">
+      <div class="phone-head">
+        <div class="name">Sra. Duarte — mamá de Emilia</div>
+        <div class="stage-pill" data-pill>Lead nuevo</div>
+      </div>
+      <div class="phone-body" data-body>
+        <div class="bubble in" data-stage="Lead nuevo">Hola buenas tardes, vi su anuncio, ¿tienen lugar en Kinder 2?<span class="meta">4:12 pm</span></div>
+        <div class="bubble out" data-stage="Contactado">¡Hola! Con gusto — sí tenemos lugar en Kinder 2. Te comparto info del colegio y nuestra oferta académica 🌱<span class="meta">4:14 pm</span></div>
+        <div class="bubble in" data-stage="Calificado">Perfecto. Mi hija tiene 4 años, buscamos algo bilingüe y que empiece cuanto antes, en agosto ya la queremos aquí.<span class="meta">4:20 pm</span></div>
+        <div class="bubble out" data-stage="Cita agendada">Entonces te agendo una visita esta semana para que conozcan el salón y el método 👇 <span class="meta">4:22 pm</span></div>
+        <div class="bubble in" data-stage="Asistencia">Fuimos hoy con mi esposo, nos encantó el huerto y cómo trabajan con los niños 😍<span class="meta">Jue 11:40 am</span></div>
+        <div class="bubble out" data-stage="Zona de Selección">Qué gusto. Antes de inscribir, nada más nos falta una breve valoración con Emilia, es rutina 📋<span class="meta">Jue 11:45 am</span></div>
+        <div class="bubble in" data-stage="Inscrito">Ya hicimos el pago del apartado, ¡nos vemos en agosto! 🎉<span class="meta">Lun 9:03 am</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="phone-note">el mismo pill de arriba va cambiando de nombre según avanza el hilo</p>
+
+  <p class="narr" style="margin-top:22px;">Fíjate que no todas las familias pasan por la <span class="term">Zona de Selección</span> — ese paso lo define cada institución (examen, entrevista, documentación, pago). En tu caso, es donde vive tu valoración psicopedagógica cuando aplica. El resto de las casillas son siempre las mismas, para todas tus familias.</p>
+  <button class="recap-btn" data-recap="cap-4">🔁 Repaso rápido</button>
+</section>
+
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ============ CAP 5 ============ -->
+<section class="chapter" id="cap-5" data-title="Qué tan urgidos están">
+  <div class="chapter-head">
+    <div class="chapter-eyebrow"><span class="no">05</span> · Urgencia y Dolor</div>
+    <h2>¿Qué tan urgida está la señora Duarte?</h2>
+    <p class="sub">Vuelve a leer dos frases que ya viste en el hilo de arriba — esta vez con lupa.</p>
+  </div>
+  <p class="narr">Cuando Miss Gladys — o mañana tu Setter — habla con una familia, hay dos preguntas silenciosas que siempre está contestando, sin necesidad de un formulario aparte:</p>
+
+  <div class="exhibits">
+    <div class="exhibit">
+      <div class="bub">"...buscamos algo bilingüe y que empiece cuanto antes, en agosto ya la queremos aquí."</div>
+      <div class="note">Urgencia: Alta</div>
+      <div class="note2">Fecha concreta, decisión ya tomada. Esta cita se prioriza sobre las demás.</div>
+    </div>
+    <div class="exhibit">
+      <div class="bub">"Mi hija llora todas las mañanas antes de ir a su escuela actual, de verdad quiero cambiarla."</div>
+      <div class="note">Dolor: Alto</div>
+      <div class="note2">Hay un problema real detrás, no solo curiosidad o comparación de precios.</div>
+    </div>
+  </div>
+
+  <table class="qtable">
+    <thead><tr><th>Urgencia</th><th>Señal</th></tr></thead>
+    <tbody>
+      <tr><td><b>Alta</b></td><td>Quiere el ciclo inmediato, con fecha cercana.</td></tr>
+      <tr><td><b>Media</b></td><td>Ya decidió, pero para un ciclo posterior.</td></tr>
+      <tr><td><b>Baja</b></td><td>Está explorando, sin fecha definida.</td></tr>
+    </tbody>
+  </table>
+  <p class="narr" style="font-size:14px; color:var(--ink-dim);">Alta urgencia + alto dolor = lead caliente, se atiende primero. Los dos bajos se dejan a la automatización — no porque importen menos, sino porque hoy ahí es donde menos rinde tu tiempo.</p>
+  <button class="recap-btn" data-recap="cap-5">🔁 Repaso rápido</button>
+</section>
+
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ============ CAP 6 ============ -->
+<section class="chapter" id="cap-6" data-title="Cuando se enfrían">
+  <div class="chapter-head">
+    <div class="chapter-eyebrow"><span class="no">06</span> · Estado · Ghosting · Razones de pérdida</div>
+    <h2>Cuando se enfrían</h2>
+    <p class="sub">No todas las familias son la señora Duarte. Conoce a la familia Peña.</p>
+  </div>
+  <p class="narr">La familia Peña visitó hace ocho días, preguntando por Secundaria. Todo iba bien — hasta que dejó de contestar.</p>
+
+  <div class="phone-wrap">
+    <div class="phone" data-phone="2">
+      <div class="phone-head">
+        <div class="name">Familia Peña — Secundaria</div>
+        <div class="stage-pill" data-pill style="background:#F3C6BA; color:#8C3A28;">Perdido · Ghosting</div>
+      </div>
+      <div class="phone-body" data-body>
+        <div class="bubble out" data-stage="Asistencia">¡Qué gusto verlos hoy! Cualquier duda que les haya quedado, aquí estamos 🙂<span class="meta">Lun 1:15 pm</span></div>
+        <div class="bubble out" data-stage="Ghosting día 0">¿Qué les pareció la visita? Nos encantaría que Emiliano se una al grupo 🎓<span class="meta">Vie 10:02 am</span></div>
+        <div class="bubble out" data-stage="Ghosting día 1"><span class="flag">visto ✓✓</span>Sé que decidir no es fácil — si les sirve, les puedo mandar el testimonio de otra familia que vivió lo mismo.<span class="meta">Sáb 6:40 pm</span></div>
+        <div class="bubble out" data-stage="Breakup">Voy a guardar su lugar unos días más — después de eso, tengo que liberarlo para otra familia en lista de espera 🙏<span class="meta">Lun 9:00 am</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="phone-note">tres intentos, con una intención distinta cada vez — no es solo insistir</p>
+
+  <p class="narr" style="margin-top:20px;">Aquí hay una distinción que vale oro: <span class="term">Abandonado</span> es cuando alguien nunca contestó ni una sola vez desde el primer mensaje. <span class="term">Perdido por Ghosting</span> es distinto — sí hubo conversación, sí hubo interés, y aun así se enfrió. Son dos historias distintas y el sistema las trata distinto.</p>
+
+  <p class="narr">Y cuando sí hay una razón explícita — no un silencio — se registra tal cual, sin adivinar:</p>
+  <div class="pillrow">
+    <span>Precio / capacidad de pago</span>
+    <span>Competencia</span>
+    <span>Ajuste de oferta (fit)</span>
+    <span>Ubicación / logística</span>
+    <span>Timing / ciclo</span>
+    <span>Ghosting</span>
+  </div>
+  <p class="narr" style="font-size:14px; color:var(--ink-dim);">Si la familia Peña te hubiera dicho "decidimos quedarnos donde está, por la colegiatura" — esa es la razón que se anota. Ghosting es solo para cuando de verdad se apagó sin decir nada.</p>
+
+  <div style="margin-top:18px;"><span class="stamp r">Perdido</span><span class="stamp g">Ganado</span><span class="stamp n">Abierto</span></div>
+  <button class="recap-btn" data-recap="cap-6">🔁 Repaso rápido</button>
+</section>
+
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ============ CAP 7 ============ -->
+<section class="chapter" id="cap-7" data-title="Quién hace qué">
+  <div class="chapter-head">
+    <div class="chapter-eyebrow"><span class="no">07</span> · Roles: Setter y Closer</div>
+    <h2>Quién hace qué</h2>
+    <p class="sub">Detrás de cada mensaje, alguien tiene que estar. Hoy esa persona eres tú, dos veces.</p>
+  </div>
+  <p class="narr">El método separa el trabajo en dos roles que casi nunca deberían vivir en la misma persona por mucho tiempo:</p>
+
+  <div class="roles">
+    <div class="role">
+      <span class="badge">Setter</span>
+      <h4>Contacta y agenda</h4>
+      <p>Contesta rápido, califica urgencia y dolor, y llena la agenda de citas — sin necesidad de cerrar la venta.</p>
+    </div>
+    <div class="role you">
+      <span class="badge">Closer</span>
+      <h4>Cierra en la cita</h4>
+      <p>Tú. La familia que llega por el método, contigo se queda. Ese instinto no se delega — se protege.</p>
+    </div>
+  </div>
+
+  <p class="narr">Hoy haces las dos cosas — y esa es exactamente la razón por la que "no puedes atender a tanta gente", como tú misma lo has dicho en nuestras juntas. La idea para octubre no es reemplazarte: es contratar a alguien que llene tu agenda, para que tú solo hagas la parte que nadie más puede hacer tan bien como tú.</p>
+  <button class="recap-btn" data-recap="cap-7">🔁 Repaso rápido</button>
+</section>
+
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+
+<!-- ============ CAP 8 ============ -->
+<section class="chapter" id="cap-8" data-title="De la teoría a tu cuenta">
+  <div class="chapter-head">
+    <div class="chapter-eyebrow"><span class="no">08</span> · Cierre</div>
+    <h2>De la teoría a tu cuenta</h2>
+    <p class="sub">Vas a ver tu propia cuenta con estas mismas palabras.</p>
+  </div>
+  <p class="lead narr">Todo lo que acabas de leer no es un curso aparte — es exactamente el vocabulario con el que vas a ver configurada tu cuenta de SuperLeads. Cuando veas un contacto, vas a saber preguntar su tipo. Cuando veas un número, vas a saber en qué ciclo vive. Cuando veas una tarjeta moverse de columna, vas a reconocer la etapa. Y cuando una se quede quieta, vas a saber si está dormida o si de verdad se perdió.</p>
+
+  <div class="checklist">
+    <div class="check"><span class="c">✓</span> Tipo de contacto — solo Prospecto es oportunidad</div>
+    <div class="check"><span class="c">✓</span> Fuente → Canal → Campaña</div>
+    <div class="check"><span class="c">✓</span> Lead = Oportunidad, y los tres ciclos</div>
+    <div class="check"><span class="c">✓</span> Las etapas del camino</div>
+    <div class="check"><span class="c">✓</span> Urgencia y Dolor</div>
+    <div class="check"><span class="c">✓</span> Estado, Ghosting y razones de pérdida</div>
+    <div class="check"><span class="c">✓</span> Setter y Closer</div>
+  </div>
+
+  <p class="narr">Nos vemos pronto, Karla.</p>
+</section>
+
+<footer>
+  <div>SuperLeads · Expediente de trabajo — documento interno de onboarding</div>
+  <div>Little Kids · Colegio Iberoamericano</div>
+</footer>
+
+</main>
+
+<div class="recap-overlay" id="recapOverlay">
+  <div class="recap-card">
+    <button class="recap-close" id="recapClose" aria-label="Cerrar">×</button>
+    <div class="recap-eyebrow" id="recapEyebrow">Repaso rápido</div>
+    <h3 id="recapTitle"></h3>
+    <ul id="recapList"></ul>
+  </div>
+</div>
+
+<script>
+const chapters = [
+  {id:'cap-0', label:'Portada'},
+  {id:'cap-1', label:'Quién toca la puerta'},
+  {id:'cap-2', label:'De dónde vinieron'},
+  {id:'cap-3', label:'Un mismo hilo, tres tiempos'},
+  {id:'cap-4', label:'El camino'},
+  {id:'cap-5', label:'Qué tan urgidos están'},
+  {id:'cap-6', label:'Cuando se enfrían'},
+  {id:'cap-7', label:'Quién hace qué'},
+  {id:'cap-8', label:'De la teoría a tu cuenta'},
+];
+
+function goToChapter(targetId){
+  const el = document.getElementById(targetId);
+  if(!el) return;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - 8;
+  window.scrollTo({top, behavior:'smooth'});
+}
+
+const rail = document.getElementById('rail');
+chapters.forEach((c,i)=>{
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'rail-tab';
+  b.textContent = i;
+  b.dataset.target = c.id;
+  b.dataset.label = c.label;
+  b.setAttribute('aria-label', 'Ir a: ' + c.label);
+  rail.appendChild(b);
+});
+const railTabs = [...document.querySelectorAll('.rail-tab')];
+const railCaption = document.getElementById('railCaption');
+railTabs.forEach(t=>{
+  t.addEventListener('mouseenter', ()=>{
+    railCaption.textContent = t.dataset.label;
+    railCaption.style.top = (t.getBoundingClientRect().top) + 'px';
+    railCaption.style.opacity = '1';
+  });
+  t.addEventListener('mouseleave', ()=> railCaption.style.opacity = '0');
+  t.addEventListener('click', ()=> goToChapter(t.dataset.target));
+});
+
+const mobileDots = document.getElementById('mobileDots');
+chapters.forEach((c,i)=>{
+  const d = document.createElement('button');
+  d.type = 'button';
+  d.className = 'dot';
+  d.dataset.target = c.id;
+  d.setAttribute('aria-label', 'Ir a: ' + c.label);
+  d.addEventListener('click', ()=> goToChapter(c.id));
+  mobileDots.appendChild(d);
+});
+const dots = [...document.querySelectorAll('.mobile-bar .dot')];
+
+const sectionEls = chapters.map(c=>document.getElementById(c.id));
+function onScroll(){
+  const y = window.scrollY + window.innerHeight*0.3;
+  let idx = 0;
+  sectionEls.forEach((el,i)=>{ if(el && el.offsetTop <= y) idx = i; });
+  railTabs.forEach(t=>t.classList.remove('active'));
+  if(railTabs[idx]) railTabs[idx].classList.add('active');
+  dots.forEach(d=>d.classList.remove('active'));
+  if(dots[idx]) dots[idx].classList.add('active');
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+// Repaso rápido — datos por capítulo
+const recapData = {
+  'cap-1': {title:'Quién toca la puerta', items:[
+    '<b>Tipo de contacto</b>: la primera clasificación, obligatoria para todo el que escribe.',
+    '<b>Prospecto</b> es el único tipo que se puede volver oportunidad de venta.',
+    'Alumno activo / graduado / retirado, Empleo y Proveedor <b>nunca</b> son oportunidad — aunque sí merecen respuesta.',
+  ]},
+  'cap-2': {title:'De dónde vinieron', items:[
+    '<b>Fuente → Canal → Campaña</b>: los tres niveles de dónde vino un prospecto, no uno solo.',
+    'Todo prospecto debe traer fuente, sin excepción — si no, no sabrás qué canal de verdad funciona.',
+    'Tu mix real hacia la meta: 60% Expo Escuela, 30% Meta, 10% referidos.',
+  ]},
+  'cap-3': {title:'Un mismo hilo, tres tiempos', items:[
+    '<b>Lead</b> y <b>Oportunidad</b> son la misma cosa — el mismo objeto visto en dos momentos.',
+    '<b>Ciclos</b>: Pasado, Actual y Próximo nunca se mezclan entre sí.',
+    'Al cerrar un ciclo, se archiva tal cual quedó, y el "próximo" pasa a ser el nuevo "actual".',
+  ]},
+  'cap-4': {title:'El camino', items:[
+    'El camino: <b>Lead → Contactado → Calificado → Cita agendada → Asistencia → Zona de Selección → Inscrito.</b>',
+    'La <b>Zona de Selección</b> es el único paso que cada institución define distinto (examen, entrevista, documentación).',
+    'El resto de las etapas son siempre las mismas, para cualquier familia.',
+  ]},
+  'cap-5': {title:'Qué tan urgidos están', items:[
+    '<b>Urgencia</b>: qué tan pronto decide o necesita inscribir (Alta / Media / Baja).',
+    '<b>Dolor</b>: qué tan real y fuerte es el problema que resuelves (Alto / Medio / Bajo).',
+    'Alta urgencia + alto dolor = lead caliente, se atiende primero.',
+  ]},
+  'cap-6': {title:'Cuando se enfrían', items:[
+    '<b>Estado</b>: Abierto, Ganado, Perdido o Abandonado.',
+    '<b>Abandonado</b> = nunca contestó. <b>Perdido por Ghosting</b> = contestó y luego se enfrió.',
+    'Toda pérdida lleva una razón: precio, competencia, ajuste de oferta, ubicación, timing o ghosting — nunca se deja en blanco.',
+  ]},
+  'cap-7': {title:'Quién hace qué', items:[
+    '<b>Setter</b>: contacta, califica (urgencia y dolor) y agenda la cita.',
+    '<b>Closer</b>: cierra la inscripción en la cita — hoy, esa eres tú.',
+    'La meta no es reemplazarte: es que alguien más llene tu agenda para que tú solo cierres.',
+  ]},
+};
+
+const recapOverlay = document.getElementById('recapOverlay');
+const recapTitle = document.getElementById('recapTitle');
+const recapList = document.getElementById('recapList');
+const recapEyebrow = document.getElementById('recapEyebrow');
+let lastFocused = null;
+
+function openRecap(chapterId){
+  const data = recapData[chapterId];
+  if(!data) return;
+  const chNum = chapterId.split('-')[1];
+  recapEyebrow.textContent = 'Repaso rápido · Capítulo ' + chNum;
+  recapTitle.textContent = data.title;
+  recapList.innerHTML = data.items.map(i=>'<li>'+i+'</li>').join('');
+  lastFocused = document.activeElement;
+  recapOverlay.classList.add('open');
+  document.getElementById('recapClose').focus();
+}
+function closeRecap(){
+  recapOverlay.classList.remove('open');
+  if(lastFocused) lastFocused.focus();
+}
+document.querySelectorAll('.recap-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> openRecap(btn.dataset.recap));
+});
+document.getElementById('recapClose').addEventListener('click', closeRecap);
+recapOverlay.addEventListener('click', e=>{ if(e.target === recapOverlay) closeRecap(); });
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && recapOverlay.classList.contains('open')) closeRecap(); });
+
+// Phone bubble reveal
+const phones = document.querySelectorAll('.phone');
+phones.forEach(phone=>{
+  const bubbles = [...phone.querySelectorAll('.bubble')];
+  const pill = phone.querySelector('[data-pill]');
+  const originalPill = pill ? pill.textContent : '';
+  let revealed = false;
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting && !revealed){
+        revealed = true;
+        bubbles.forEach((b,i)=>{
+          setTimeout(()=>{
+            b.classList.add('visible');
+            if(pill && b.dataset.stage && !pill.dataset.locked){
+              pill.textContent = b.dataset.stage;
+            }
+          }, i*550);
+        });
+        obs.disconnect();
+      }
+    });
+  }, {threshold:0.35});
+  obs.observe(phone);
+});
+</script>
+</body>
+</html>
