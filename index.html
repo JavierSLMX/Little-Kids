@@ -6,30 +6,33 @@
 <title>Expediente · El mismo idioma — SuperLeads</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#F3ECDD;
-  --paper-deep:#EADFC5;
-  --paper-card:#FBF7EE;
-  --line:#D8C9A6;
-  --line-soft:#E4D8BA;
-  --ink:#241C15;
-  --ink-dim:#6B5D46;
-  --ink-faint:#9C8E71;
-  --navy:#0C2350;
-  --navy-soft:#33456F;
-  --stamp-green:#2B6B4C;
-  --stamp-red:#8C3A28;
-  --wa-out:#DCEFE1;
+  --paper:#F4F7FB;
+  --paper-deep:#E9EDF6;
+  --paper-card:#FFFFFF;
+  --line:#E1E6F0;
+  --line-soft:#EDF1F8;
+  --ink:#0A1330;
+  --ink-dim:#5A6478;
+  --ink-faint:#8A93A6;
+  --navy:#002582;
+  --navy-soft:#2143BD;
+  --stamp-green:#0E9F6E;
+  --stamp-red:#F44E4E;
+  --wa-out:#DFF7E9;
   --wa-in:#FFFFFF;
-  --highlight:rgba(244,196,84,.45);
+  --highlight:rgba(86,239,159,.45);
   --metal:#9AA3AE;
+  --navy-deep:#04123D;
+  --mint-bright:#7DE29B;
+  --blue:#2A89FB;
   --r:14px;
   --r-lg:22px;
-  --font-display:'Fraunces', serif;
-  --font-body:'Karla', sans-serif;
-  --font-mono:'JetBrains Mono', monospace;
+  --font-display:'Inter', sans-serif;
+  --font-body:'Inter', sans-serif;
+  --font-mono:'Inter', sans-serif;
 }
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -64,21 +67,31 @@ button{font-family:var(--font-body); cursor:pointer;}
   font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--ink-faint);
   cursor:pointer; transition:.2s; text-decoration:none; padding:0; appearance:none;
 }
-.rail-tab:hover{color:var(--ink); background:#F1E6C8;}
-.rail-tab.active{background:var(--navy); color:#F3ECDD; border-color:var(--navy); width:64px;}
+.rail-tab:hover{color:var(--ink); background:#DCE4F5;}
+.rail-tab.active{background:var(--navy); color:var(--paper); border-color:var(--navy); width:64px;}
 .rail-caption{position:fixed; left:96px; top:0; z-index:79; font-family:var(--font-mono); font-size:10.5px;
   color:var(--ink-dim); letter-spacing:.04em; opacity:0; transition:opacity .2s; pointer-events:none;
   background:var(--paper-card); border:1px solid var(--line); padding:6px 10px; border-radius:8px; max-width:180px;}
 
-.mobile-bar{display:none; position:fixed; top:0; left:0; right:0; z-index:90; background:var(--navy); color:#F3ECDD;
+.mobile-bar{display:none; position:fixed; top:0; left:0; right:0; z-index:90; background:var(--navy); color:var(--paper);
   padding:12px 18px; align-items:center; justify-content:space-between; font-family:var(--font-mono); font-size:12px;}
 .mobile-bar .dot-row{display:flex; gap:5px;}
 .mobile-bar .dot{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.28); border:none; padding:0; appearance:none; cursor:pointer;}
-.mobile-bar .dot.active{background:#7DE29B;}
+.mobile-bar .dot.active{background:var(--mint-bright);}
 
 /* ============ LAYOUT ============ */
 main{margin-left:84px;}
 .cover{padding:120px 0 80px; max-width:700px; margin:0 auto; padding-left:28px; padding-right:28px;}
+.brandmark{display:flex; align-items:center; gap:12px; margin-bottom:30px;}
+.brandmark .mark{
+  width:40px; height:40px; border-radius:11px; flex-shrink:0;
+  background:linear-gradient(135deg, var(--navy), var(--mint));
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:800; font-size:19px; color:var(--navy-deep);
+}
+.brandmark .word b{display:block; font-family:var(--font-display); font-weight:700; font-size:15px; color:var(--ink); line-height:1.3;}
+.brandmark .word span{display:block; font-size:11.5px; color:var(--ink-dim);}
+
 .folio{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-dim);
   display:flex; align-items:center; gap:10px; margin-bottom:26px;}
 .folio::before{content:""; width:26px; height:1px; background:var(--ink-faint);}
@@ -143,13 +156,13 @@ p.narr{font-size:16px; color:var(--ink);}
 .msgcard .who{font-family:var(--font-mono); font-size:11px; text-transform:uppercase; color:var(--ink-dim); margin-bottom:8px; letter-spacing:.04em;}
 .msgcard .txt{font-size:14.5px; color:var(--ink); font-style:italic; margin-bottom:10px;}
 .msgcard .tag{display:inline-block; font-family:var(--font-mono); font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px;}
-.msgcard.yes{border-color:#B9D4C4;}
-.msgcard.yes .tag{background:#E3F2E9; color:var(--stamp-green);}
-.msgcard.no .tag{background:#F3E4DE; color:var(--stamp-red);}
+.msgcard.yes{border-color:#BEE7D2;}
+.msgcard.yes .tag{background:#E1F9EC; color:var(--stamp-green);}
+.msgcard.no .tag{background:#FDE2E2; color:var(--stamp-red);}
 
 /* ============ FUENTE FLOW (cap 2) ============ */
 .flow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:18px 0;}
-.flow .f{background:var(--navy); color:#F3ECDD; font-family:var(--font-mono); font-size:12.5px; font-weight:600;
+.flow .f{background:var(--navy); color:var(--paper); font-family:var(--font-mono); font-size:12.5px; font-weight:600;
   padding:8px 14px; border-radius:999px;}
 .flow .arr{color:var(--ink-faint);}
 .mix-bar{display:flex; height:34px; border-radius:8px; overflow:hidden; margin:16px 0 8px; border:1px solid var(--line);}
@@ -168,13 +181,13 @@ p.narr{font-size:16px; color:var(--ink);}
 /* ============ PHONE ============ */
 .phone-wrap{display:flex; justify-content:center; margin:32px 0 20px;}
 .phone{
-  width:300px; max-width:88vw; background:#EFEAE2; border-radius:32px; border:8px solid var(--navy);
+  width:300px; max-width:88vw; background:#E9EDF3; border-radius:32px; border:8px solid var(--navy);
   box-shadow:0 20px 44px rgba(12,35,80,.28); overflow:hidden; position:relative;
 }
-.phone-head{background:var(--navy); color:#fff; padding:14px 16px 10px; }
+.phone-head{background:var(--navy-deep); color:#fff; padding:14px 16px 10px; }
 .phone-head .name{font-weight:700; font-size:14px;}
 .phone-head .stage-pill{
-  display:inline-block; margin-top:6px; background:#7DE29B; color:#0C2350; font-family:var(--font-mono);
+  display:inline-block; margin-top:6px; background:var(--mint-bright); color:var(--navy-deep); font-family:var(--font-mono);
   font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:999px; letter-spacing:.03em;
 }
 .phone-body{padding:16px 12px 18px; min-height:120px; display:flex; flex-direction:column; gap:10px;}
@@ -214,7 +227,7 @@ p.narr{font-size:16px; color:var(--ink);}
 .role p{font-size:13.5px; color:var(--ink-dim); margin-bottom:0;}
 .role.you{border-color:var(--navy);}
 .role .badge{display:inline-block; font-family:var(--font-mono); font-size:10.5px; font-weight:700; color:var(--navy);
-  background:#E3EBFB; padding:2px 9px; border-radius:999px; margin-bottom:10px;}
+  background:#E5EFFF; padding:2px 9px; border-radius:999px; margin-bottom:10px;}
 
 /* razones pills */
 .pillrow{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0;}
@@ -287,6 +300,10 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
 
 <main>
 <header class="cover" id="cap-0">
+  <div class="brandmark">
+    <div class="mark">S</div>
+    <div class="word"><b>SuperLeads</b><span>Expertos en Inscripciones</span></div>
+  </div>
   <div class="folio">Expediente de trabajo · Little Kids / Colegio Iberoamericano</div>
   <h1>El mismo idioma,<br><em>antes de tu cuenta.</em></h1>
   <p class="dek">Pronto vamos a abrir tu cuenta de SuperLeads y te vamos a enseñar dónde vive cada cosa. Para que esa sesión no se sienta como otro choro técnico, primero sigamos a una familia — parecida a cientos de las tuyas — desde el primer mensaje hasta el día que inscribe. Cada palabra nueva aparece exactamente en el momento en que la necesitas, no antes.</p>
@@ -299,7 +316,7 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
   <p class="receipt-note">Así se ve tu embudo real hoy. Al final de este expediente, vas a saber nombrar cada parte — y muy pronto las vas a ver adentro de tu cuenta.</p>
 </header>
 
-<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#E1E6F0" stroke-width="1" fill="none"/></svg></div>
 
 <!-- ============ CAP 1 ============ -->
 <section class="chapter" id="cap-1" data-title="Quién toca la puerta">
@@ -328,7 +345,7 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
   <button class="recap-btn" data-recap="cap-1">🔁 Repaso rápido</button>
 </section>
 
-<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#E1E6F0" stroke-width="1" fill="none"/></svg></div>
 
 <!-- ============ CAP 2 ============ -->
 <section class="chapter" id="cap-2" data-title="De dónde vinieron">
@@ -349,21 +366,21 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
   <p class="narr">Esto no es curiosidad — es dinero. Así es como vas a repartir los <b>529 formularios</b> que necesitas para llegar a tu meta de 65:</p>
 
   <div class="mix-bar">
-    <span style="width:60%; background:#0C2350;">60% Expo Escuela</span>
-    <span style="width:30%; background:#2B6B4C;">30% Meta</span>
-    <span style="width:10%; background:#8C3A28;">10% Referidos</span>
+    <span style="width:60%; background:#002582;">60% Expo Escuela</span>
+    <span style="width:30%; background:#0E9F6E;">30% Meta</span>
+    <span style="width:10%; background:#2A89FB;">10% Referidos</span>
   </div>
   <div class="mix-legend">
-    <span><i style="background:#0C2350"></i>317 formularios</span>
-    <span><i style="background:#2B6B4C"></i>159 formularios</span>
-    <span><i style="background:#8C3A28"></i>53 formularios</span>
+    <span><i style="background:#002582"></i>317 formularios</span>
+    <span><i style="background:#0E9F6E"></i>159 formularios</span>
+    <span><i style="background:#2A89FB"></i>53 formularios</span>
   </div>
 
   <p class="narr">Por eso el sistema exige que <span class="term">todo prospecto traiga fuente, sí o sí</span>. Sin ese dato, nunca vas a saber si te conviene invertir más en el evento de enero o subirle a la pauta de Meta — vas a estar adivinando con la misma incertidumbre de siempre.</p>
   <button class="recap-btn" data-recap="cap-2">🔁 Repaso rápido</button>
 </section>
 
-<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#E1E6F0" stroke-width="1" fill="none"/></svg></div>
 
 <!-- ============ CAP 3 ============ -->
 <section class="chapter" id="cap-3" data-title="Un mismo hilo, tres tiempos">
@@ -400,7 +417,7 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
   <button class="recap-btn" data-recap="cap-3">🔁 Repaso rápido</button>
 </section>
 
-<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#E1E6F0" stroke-width="1" fill="none"/></svg></div>
 
 <!-- ============ CAP 4 ============ -->
 <section class="chapter" id="cap-4" data-title="El camino">
@@ -434,7 +451,7 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
   <button class="recap-btn" data-recap="cap-4">🔁 Repaso rápido</button>
 </section>
 
-<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#E1E6F0" stroke-width="1" fill="none"/></svg></div>
 
 <!-- ============ CAP 5 ============ -->
 <section class="chapter" id="cap-5" data-title="Qué tan urgidos están">
@@ -470,7 +487,7 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
   <button class="recap-btn" data-recap="cap-5">🔁 Repaso rápido</button>
 </section>
 
-<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#E1E6F0" stroke-width="1" fill="none"/></svg></div>
 
 <!-- ============ CAP 6 ============ -->
 <section class="chapter" id="cap-6" data-title="Cuando se enfrían">
@@ -485,7 +502,7 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
     <div class="phone" data-phone="2">
       <div class="phone-head">
         <div class="name">Familia Peña — Secundaria</div>
-        <div class="stage-pill" data-pill style="background:#F3C6BA; color:#8C3A28;">Perdido · Ghosting</div>
+        <div class="stage-pill" data-pill style="background:#FDE2E2; color:#F44E4E;">Perdido · Ghosting</div>
       </div>
       <div class="phone-body" data-body>
         <div class="bubble out" data-stage="Asistencia">¡Qué gusto verlos hoy! Cualquier duda que les haya quedado, aquí estamos 🙂<span class="meta">Lun 1:15 pm</span></div>
@@ -514,7 +531,7 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
   <button class="recap-btn" data-recap="cap-6">🔁 Repaso rápido</button>
 </section>
 
-<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#E1E6F0" stroke-width="1" fill="none"/></svg></div>
 
 <!-- ============ CAP 7 ============ -->
 <section class="chapter" id="cap-7" data-title="Quién hace qué">
@@ -542,7 +559,7 @@ footer{max-width:700px; margin:60px auto 0; padding:32px 28px 60px; border-top:1
   <button class="recap-btn" data-recap="cap-7">🔁 Repaso rápido</button>
 </section>
 
-<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#D8C9A6" stroke-width="1" fill="none"/></svg></div>
+<div class="torn"><svg viewBox="0 0 700 26" preserveAspectRatio="none"><path d="M0 13 L20 5 L40 18 L60 6 L80 16 L100 4 L120 17 L140 7 L160 15 L180 5 L200 18 L220 6 L240 16 L260 4 L280 17 L300 7 L320 15 L340 5 L360 18 L380 6 L400 16 L420 4 L440 17 L460 7 L480 15 L500 5 L520 18 L540 6 L560 16 L580 4 L600 17 L620 7 L640 15 L660 5 L680 18 L700 6" stroke="#E1E6F0" stroke-width="1" fill="none"/></svg></div>
 
 <!-- ============ CAP 8 ============ -->
 <section class="chapter" id="cap-8" data-title="De la teoría a tu cuenta">
